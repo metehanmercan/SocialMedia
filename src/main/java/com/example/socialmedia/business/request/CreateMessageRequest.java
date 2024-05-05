@@ -7,6 +7,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 
 
 @Data
@@ -22,12 +24,15 @@ public class CreateMessageRequest {
 
     private int receiverId;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")   // localtime için gerekli
-    private LocalDateTime creationDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")// localtime için gerekli
+    private LocalDateTime date;
 
 
-    public CreateMessageRequest() {
-        this.creationDate = LocalDateTime.now(); // Yerel saat dilimine göre tarih ve zaman alınır mesaj oluşurkenki saati otomatik çeker bu
-    }
+ /*public CreateMessageRequest() {
+     this.date = LocalDateTime.now(); // Yerel saat dilimine göre tarih ve zaman alınır mesaj oluşurkenki saati otomatik çeker bu
+    }*/
+
 
 }
+
+

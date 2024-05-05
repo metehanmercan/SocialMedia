@@ -43,6 +43,8 @@ public class UserManager implements UserService {
     @Override
     public void add(CreateUserRequest createUserRequest) {
         this.userBusinessRule.checkIfExistsName(createUserRequest.getName());
+        this.userBusinessRule.checkIfExistsPassword(createUserRequest.getPassword());
+        this.userBusinessRule.checkIfExistsEmail(createUserRequest.getEmail());
         User user=this.modelMapperService.forRequest().map(createUserRequest, User.class);
        this.userRepository.save(user);
 

@@ -17,5 +17,5 @@ public class GetAllMessageResponse {
     private String content;
     private String senderName;
     private String receiverName;
-    private LocalDateTime creationDate;
+    private LocalDateTime date;
 }

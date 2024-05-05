@@ -8,11 +8,11 @@ import com.example.socialmedia.core.utilities.mapper.ModelMapperService;
 import com.example.socialmedia.dataAccess.MessageRepository;
 import com.example.socialmedia.dataAccess.UserRepository;
 import com.example.socialmedia.entities.Message;
-
 import com.example.socialmedia.entities.User;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -29,6 +29,12 @@ public class MessageManager implements MessageService {
     public List<GetAllMessageResponse> getAll() {
         List<Message> messages = this.messageRepository.findAll();
         List<GetAllMessageResponse> getAllMessageResponses = messages.stream().map(message -> this.modelMapperService.forResponse().map(message, GetAllMessageResponse.class)).collect(Collectors.toList());
+       /* List<GetAllMessageResponse> getAllMessageResponses = new ArrayList<>();
+        for (Message message : messages) {
+            GetAllMessageResponse getAllMessageResponse = new GetAllMessageResponse();
+            getAllMessageResponse.setDate(message.getDate());
+            getAllMessageResponses.add(getAllMessageResponse);
+        }*/
         return getAllMessageResponses;
     }
 
@@ -45,27 +51,32 @@ public class MessageManager implements MessageService {
         this.messageRule.checkIfReceiverName(receiverName);
         List<Message> messages = this.messageRepository.findByReceiverName(receiverName);
         List<GetAllMessageResponse> getAllMessageResponses = messages.stream().map(message -> this.modelMapperService.forResponse().map(message, GetAllMessageResponse.class)).collect(Collectors.toList());
+
         return getAllMessageResponses;
     }
 
     @Override
     public void add(CreateMessageRequest createMessageRequest) {
-        // this.messageRule.checkIfSenderId(createMessageRequest.getSenderId());
-        //  this.messageRule.checkIfReceiverId(createMessageRequest.getReceiverId());
-        Message message = this.modelMapperService.forRequest().map(createMessageRequest, Message.class);
+      //  this.messageRule.checkIfReceiverId(createMessageRequest.getReceiverId());
+     //   this.messageRule.checkIfSenderId(createMessageRequest.getSenderId());
+         Message message = this.modelMapperService.forRequest().map(createMessageRequest, Message.class);
+     //  Message message = new Message();
+     //   message.setDate(LocalDateTime.now());
+    //   message.setContent(createMessageRequest.getContent());
+
         this.messageRepository.save(message);
     }
 
     @Override
     public void delete(int id) {
-        // this.messageRule.checkIfId(id);
+        this.messageRule.checkIfId(id);
         this.messageRepository.deleteById(id);
     }
 
 
-
-    @Override  // burda Map<string deme sebebimiz username string olduğu için boş bir mapin ömce anahtarı bu ismimiz olacak daha sonra
-               // bu anahtarın ilişkili olduğu mesajları listelicek her anahtar için
+    @Override
+    // burda Map<string deme sebebimiz username string olduğu için boş bir mapin ömce anahtarı bu ismimiz olacak daha sonra
+    // bu anahtarın ilişkili olduğu mesajları listelicek her anahtar için
     public Map<String, List<GetAllMessageResponse>> getMessagesByUser(String userName) {
 
         // kullanıcıyı veri tabanından cektik sender veya receiver olmasının önemi yok kullanıcı olması yeterli cünkü bu bizim mapimizin anahtarı
@@ -82,7 +93,7 @@ public class MessageManager implements MessageService {
 
         // Mesajları gönderilme/alınma tarihine göre sıralama yapıldı-sort metotu karşılaştırıcı bir metot bunu comparator ile yaptı
         //bu kodu yazmasakta çalışır cünkü findBySenderOrReceiverOrderByDate bu kod zaten sıraladı bizim için
-      sentMessages.sort(Comparator.comparing(Message::getDate));
+        sentMessages.sort(Comparator.comparing(Message::getDate).reversed());
 
         // Kullanıcının iletişimde olduğu diğer kullanıcılarla mesajları gruplayın
         Map<String, List<GetAllMessageResponse>> messagesByUser = new HashMap<>();
