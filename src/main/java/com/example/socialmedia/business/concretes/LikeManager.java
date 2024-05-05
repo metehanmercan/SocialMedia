@@ -43,7 +43,7 @@ public class LikeManager implements LikeService {
 
     @Override
     public GetByIdLikeResponse getById(int id) {
-      //  this.likeRule.checkIfExistsId(id);
+       this.likeRule.checkIfExistsId(id);
         Like like=this.likeRepository.findById(id).orElseThrow();
         GetByIdLikeResponse getByIdLikeResponse=this.modelMapperService.forResponse().map(like, GetByIdLikeResponse.class);
         return getByIdLikeResponse;
