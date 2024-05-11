@@ -35,7 +35,7 @@ public class PostManager implements PostService {
 
     @Override
     public List<GetAllPostResponse> getByUserName(String userName) {
-        this.userBusinessRule.checkIfExistsNamee(userName);
+   //     this.userBusinessRule.checkIfExistsNamee(userName);
         List<Post> posts=this.postRepository.findPostsByUserName(userName);
         List<GetAllPostResponse> getAllPostResponses=posts.stream().map(post -> this.modelMapperService.forResponse().map(post,GetAllPostResponse.class)).collect(Collectors.toList());
         return getAllPostResponses;
