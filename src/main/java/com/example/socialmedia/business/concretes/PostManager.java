@@ -51,7 +51,7 @@ public class PostManager implements PostService {
 
     @Override
     public void add(CreatePostRequest createPostRequest) {
-        this.userBusinessRule.checkIfExistsId(createPostRequest.getUserId());
+     //   this.userBusinessRule.checkIfExistsId(createPostRequest.getUserId());
         Post post=this.modelMapperService.forRequest().map(createPostRequest,Post.class);
         this.postRepository.save(post);
     }
